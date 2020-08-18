@@ -7,6 +7,7 @@
 #  Service:     https://docs.microsoft.com/en-us/azure/cosmos-db/table-introduction
 #  SDK:         https://pypi.org/project/azure-cosmosdb-table/
 #  API Doc:     https://docs.microsoft.com/en-us/python/api/azure-cosmosdb-table/?view=azure-python
+#  Example:     https://docs.microsoft.com/en-us/azure/cosmos-db/table-storage-how-to-use-python
 # --------------------------------------------------------------------------------
 
 # Demo 1:
@@ -47,7 +48,7 @@ print("Demo / Cosmos DB - Table API ... End")
 #  Service:     https://docs.microsoft.com/azure/cosmos-db/
 #  SDK:         https://pypi.org/project/azure-cosmos/
 #  API Doc:     https://docs.microsoft.com/en-us/python/api/azure-cosmos/
-#  Example:     https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/cosmos/azure-cosmos/samples
+#  Example:     https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-python-samples
 # --------------------------------------------------------------------------------
 
 # Demo 2:
@@ -76,3 +77,43 @@ for i in range(1, 10):
     )
 
 print("Demo / Cosmos DB - SQL API ... End")
+
+# --------------------------------------------------------------------------------
+# pymongo 3.11.0
+# Python SDK for 
+#       Cosmos DB's API for MongoDB
+# --------------------------------------------------------------------------------
+#  Service:     https://docs.microsoft.com/en-us/azure/cosmos-db/mongodb-introduction
+#  SDK:         https://pypi.org/project/pymongo/
+#  API Doc:     https://pymongo.readthedocs.io/en/stable/
+#  Example:     https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/cosmos/azure-cosmos/samples
+# --------------------------------------------------------------------------------
+
+# Demo 3:
+import pymongo
+from pymongo import MongoClient
+import datetime
+
+#Cosmos DB - MongoDB API v3.6
+print("Demo / Cosmos DB - MongoDB API ... Start")
+CosmosDBAccountName = "CosmosDBAccountName"
+CosmosDBAccountKey = "CosmosDBAccountKey"
+
+uri = "mongodb://" + CosmosDBAccountName + ":" + CosmosDBAccountKey + "@" + CosmosDBAccountName + ".mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@" + CosmosDBAccountKey + "@"
+client = pymongo.MongoClient(uri)
+db = client.testdb
+collection = db.testcollection
+
+print("Inserting a Document ...")
+post = {"author": "Mike",
+         "text": "My first blog post!",
+         "tags": ["mongodb", "python", "pymongo"],
+         "myshardkey": "demo001",
+         "date": datetime.datetime.utcnow()}
+post_id = collection.insert_one(post).inserted_id
+print(post_id)
+
+print("Getting a Single Document ...")
+print(collection.find_one({"_id":post_id}))
+
+print("Demo / Cosmos DB - MongoDB API ... End")
