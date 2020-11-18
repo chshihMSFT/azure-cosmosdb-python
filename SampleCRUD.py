@@ -1,6 +1,6 @@
 # --------------------------------------------------------------------------------
 # azure-cosmosdb-table 1.0.6
-# Python SDK for 
+# Python SDK for
 #       Blob Storage - Table Service (i.e. Azure Table Storage)
 #       Cosmos DB Table API
 # --------------------------------------------------------------------------------
@@ -24,7 +24,7 @@ Blob_table_service = TableService(account_name='BlobStorageAccountName', account
 Blob_table_service.create_table(tablename)
 Blob_table_service.insert_entity(tablename, task)
 # get_table_service_stats()
-# Retrieves statistics related to replication for the Table service. 
+# Retrieves statistics related to replication for the Table service.
 # IMPORTANT NOTE:
 # It is only available when read-access geo-redundant replication is enabled for the storage account.
 # ref: https://docs.microsoft.com/en-us/python/api/azure-cosmosdb-table/azure.cosmosdb.table.tableservice.tableservice?view=azure-python#get-table-service-stats-timeout-none-
@@ -41,8 +41,8 @@ print("Demo / Cosmos DB - Table API ... End")
 
 
 # --------------------------------------------------------------------------------
-# azure-cosmos 4.1.0
-# Python SDK for 
+# azure-cosmos 4.2.0
+# Python SDK for
 #       Cosmos DB SQL API
 # --------------------------------------------------------------------------------
 #  Service:     https://docs.microsoft.com/azure/cosmos-db/
@@ -76,11 +76,51 @@ for i in range(1, 10):
         }
     )
 
+#create
+container1.create_item({
+    'id': 'item1',
+    'productName': 'Widget',
+    'productModel': 'Model1',
+    'pk': 'test'
+})
+
+#read
+tmpitem1 = container1.read_item('item1', partition_key='test')
+print(tmpitem1)
+
+#upsert
+tmpitem1["productModel"] = "updated!"
+container1.upsert_item(tmpitem1)
+container1.upsert_item({
+    'id': 'item2',
+    'productName': 'Widget',
+    'productModel': 'Model2',
+    'pk': 'test'
+})
+
+tmpitem1 = container1.read_item('item1', partition_key='test')
+tmpitem2 = container1.read_item('item2', partition_key='test')
+print(tmpitem1)
+print(tmpitem2)
+
+#replace
+container1.replace_item('item1', {
+    'id': 'item1',
+    'pk': 'test'
+})
+
+tmpitem1 = container1.read_item('item1', partition_key='test')
+print(tmpitem1)
+
+#delete
+container1.delete_item('item1', partition_key='test')
+container1.delete_item('item2', partition_key='test')
+
 print("Demo / Cosmos DB - SQL API ... End")
 
 # --------------------------------------------------------------------------------
-# pymongo 3.11.0
-# Python SDK for 
+# pymongo 3.11.1
+# Python SDK for
 #       Cosmos DB's API for MongoDB
 # --------------------------------------------------------------------------------
 #  Service:     https://docs.microsoft.com/en-us/azure/cosmos-db/mongodb-introduction
